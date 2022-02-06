@@ -27,8 +27,8 @@ namespace Solidus.SuicaTools
         Kansai = 0x02,
 
         /// <summary>
-        /// Bascially everywhere else (but mostly western Japan)
+        /// Bascially everywhere else (mostly western Japan)
         /// </summary>
-        Locality = 0x03
+        OtherRegions = 0x03
     }
 }
