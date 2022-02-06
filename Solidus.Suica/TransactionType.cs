@@ -1,4 +1,4 @@
-﻿namespace SuicaDe
+﻿namespace Solidus.SuicaTools
 {
     public enum TransactionType
     {

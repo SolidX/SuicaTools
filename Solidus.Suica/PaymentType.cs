@@ -1,8 +1,8 @@
-﻿namespace SuicaDe
+﻿namespace Solidus.SuicaTools
 {
     /// <see href="https://github.com/kjj6198/swift-core-nfc-reader/blob/master/nfc/FeliCaReader/FeliCaCard.swift#L13"/>
     /// <seealso href="http://jennychan.web.fc2.com/format/suica.html"/>
-    public enum PaymentTypeEnum
+    public enum PaymentType
     {
         /// <summary>
         /// Payment Type is unknown or invalid.

@@ -1,4 +1,4 @@
-﻿namespace SuicaDe
+﻿namespace Solidus.SuicaTools
 {
     /// <summary>
     /// Represents a record in the Suica Log.
@@ -38,11 +38,11 @@
         /// </summary>
         /// <remarks>Byte 2</remarks>
         /// <see href="https://blog.kalan.dev/core-nfc-en/#felica-reader"/>
-        public PaymentTypeEnum PaymentMethod
+        public PaymentType PaymentMethod
         {
             get
             {
-                return Enum.IsDefined(typeof(PaymentTypeEnum), (PaymentTypeEnum)RawData[2]) ? (PaymentTypeEnum)RawData[2] : PaymentTypeEnum.Unknown;
+                return Enum.IsDefined(typeof(PaymentType), (PaymentType)RawData[2]) ? (PaymentType)RawData[2] : PaymentType.Unknown;
             }
         }
 

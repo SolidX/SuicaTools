@@ -1,4 +1,4 @@
-﻿namespace SuicaDe
+﻿namespace Solidus.SuicaTools
 {
     /// <summary>
     /// Represents the entire Suica History log.

@@ -1,4 +1,4 @@
-﻿namespace SuicaDe
+﻿namespace Solidus.SuicaTools
 {
     /// <see href="http://jennychan.web.fc2.com/format/suica.html"/>
     /// <remarks>
