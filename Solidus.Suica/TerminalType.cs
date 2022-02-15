@@ -26,11 +26,13 @@
         /// <summary>
         /// 券売機 / けんばいき / Ticket vending machine
         /// </summary>
+        /// <remarks>There are multiple kinds of these.</remarks>
         TicketVendingMachineA = 7,
 
         /// <summary>
         /// 券売機 / けんばいき / Ticket vending machine
         /// </summary>
+        /// <remarks>There are multiple kinds of these.</remarks>
         TicketVendingMachineB = 8,
 
         /// <summary>
@@ -42,19 +44,20 @@
         /// <summary>
         /// 券売機 / けんばいき / Ticket vending machine
         /// </summary>
+        /// <remarks>There are multiple kinds of these.</remarks>
         TicketVendingMachineC = 18,
-        
-        /// <summary>
-        /// 券売機等 / Ticket vending machines?
-        /// </summary>
-        /// <remarks>Have I mentioned I don't speak japanese?</remarks>
-        TicketVendingMachinesA = 20,
 
         /// <summary>
         /// 券売機等 / Ticket vending machines?
         /// </summary>
-        /// <remarks>Have I mentioned I don't speak japanese?</remarks>
-        TicketVendingMachinesB = 21,
+        /// <remarks>I don't know how these are different from the other TVMs but these are TVM-like and there are also multiple kinds of them.</remarks>
+        TicketVendingMachineX = 20,
+
+        /// <summary>
+        /// 券売機等 / Ticket vending machines?
+        /// </summary>
+        /// <remarks>I don't know how these are different from the other TVMs but these are TVM-like and there are also multiple kinds of them.</remarks>
+        TicketVendingMachineY = 21,
 
         /// <summary>
         /// 改札機 / かいさつき
