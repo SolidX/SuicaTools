@@ -1,4 +1,7 @@
-﻿namespace Solidus.SuicaTools
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace Solidus.SuicaTools
 {
     /// <summary>
     /// Represents the entire Suica History log.

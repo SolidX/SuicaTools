@@ -1,4 +1,12 @@
-﻿namespace Solidus.SuicaTools
+﻿using Microsoft.EntityFrameworkCore;
+using Solidus.SuicaTools.Data;
+using Solidus.SuicaTools.Data.Entities.EkiData;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Solidus.SuicaTools
 {
     /// <summary>
     /// Represents a record in the Suica Log.
@@ -7,6 +15,8 @@
     /// <see href="https://osdn.net/projects/felicalib/wiki/suica" />
     public class SuicaLogEntry
     {
+        private readonly TransitContext _context;
+
         public byte[] RawData { get; private set; }
 
         /// <summary>
@@ -83,7 +93,7 @@
         /// A identifier specifying the train line you entered the system from.
         /// </summary>
         /// <remarks>Byte 6</remarks>
-        public int? EntryLineCode
+        public short? EntryLineCode
         {
             get
             {
@@ -98,7 +108,7 @@
         /// An identifier spcificying the station you entered the system at.
         /// </summary>
         /// <remarks>Byte 7</remarks>
-        public int? EntryStationCode
+        public short? EntryStationCode
         {
             get
             {
@@ -112,7 +122,7 @@
         /// A identifier specifying the train line you exited the system at.
         /// </summary>
         /// <remarks>Byte 8</remarks>
-        public int? ExitLineCode
+        public short? ExitLineCode
         {
             get
             {
@@ -127,7 +137,7 @@
         /// An identifier spcificying the station you exited from.
         /// </summary>
         /// <remarks>Byte 9</remarks>
-        public int? ExitStationCode
+        public short? ExitStationCode
         {
             get
             {
@@ -192,6 +202,7 @@
                     var mins = (rawBits & 0b0000011111100000) >> 5;
                     var secs = (rawBits & 0b0000000000011111) * 2;
 
+                    var date = TransactionDate;
                     return new TimeOnly(hours, mins, secs);
                 }
                 return null;
@@ -244,16 +255,18 @@
             }
         }
 
-        public SuicaLogEntry()
+        public SuicaLogEntry(TransitContext ctx)
         {
+            _context = ctx;
             RawData = new byte[16];
         }
 
-        public SuicaLogEntry(byte[] data)
+        public SuicaLogEntry(byte[] data, TransitContext ctx)
         {
             if (data.Length != 16)
                 throw new ArgumentException("Invalid data provided.", nameof(data));
-            
+
+            _context = ctx;
             RawData = data;
         }
 
@@ -295,6 +308,106 @@
             }
             else
                 return new DateTime(date.Year, date.Month, date.Day);
+        }
+
+        private async Task<IEnumerable<SaibaneCode>> GetEkiDataStationsFromSaibaneCode(short region, short line, short station)
+        {
+            var mappings = await _context.SaibaneCodes
+                .Include(sc => sc.Station)
+                    .ThenInclude(s => s.Line)
+                        .ThenInclude(l => l.Company)
+                            .ThenInclude(c => c.Status)
+                .Include(sc => sc.Station)
+                    .ThenInclude(s => s.Line)
+                        .ThenInclude(l => l.Status)
+                .Include(sc => sc.Station)
+                    .ThenInclude(s => s.Status)
+                .AsNoTracking()
+                .Where(sc => sc.RegionCode == region && sc.LineCode == line && sc.StationCode == station)
+                .ToListAsync();
+
+            return mappings;
+        }
+
+        public async Task<TrainStationModel?> GetEntryStation()
+        {
+            if (IsASaleOfGoods() || IsBusRelated()) return null;
+
+            var mappings = await GetEkiDataStationsFromSaibaneCode((short)RegionCode, EntryLineCode.Value, EntryStationCode.Value);
+            var unmapped = mappings.SingleOrDefault(sc => sc.Station == null);
+            var eki = mappings.Select(sc => sc.Station).ToList();
+
+            if (unmapped == null)
+            {
+                switch (eki.Count)
+                {
+                    case 0:
+                        //Nothing found
+                        return null;
+                    case 1:
+                        //The only match is the right one
+                        return new TrainStationModel(eki.First());
+                    default:
+                        //Oh no... Maybe pick the best one based on the Entry & Exit?
+                        throw new NotImplementedException();
+                }
+            }
+            else
+            {
+                switch (eki.Count)
+                {
+                    case 0:
+                        //That override info might be useful here
+                        return new TrainStationModel(null, unmapped.StationNameOverride_JA, unmapped.StationNameOverride_EN);
+                    case 1:
+                        //Prefer the sole EkiData record over the unmapped entered record
+                        return new TrainStationModel(eki.First());
+                    default:
+                        //Oh no... Maybe pick the best one based on the Entry & Exit?
+                        //TODO: figure out how to pick a station if more than one result
+                        throw new NotImplementedException();
+                }
+            }            
+        }
+        public async Task<TrainStationModel?> GetExitStation()
+        {
+            if (IsASaleOfGoods() || IsBusRelated()) return null;
+
+            var mappings = await GetEkiDataStationsFromSaibaneCode((short)RegionCode, ExitLineCode.Value, ExitStationCode.Value);
+            var unmapped = mappings.SingleOrDefault(sc => sc.Station == null);
+            var eki = mappings.Select(sc => sc.Station).ToList();
+
+            if (unmapped == null)
+            {
+                switch (eki.Count)
+                {
+                    case 0:
+                        //Nothing found
+                        return null;
+                    case 1:
+                        //The only match is the right one
+                        return new TrainStationModel(eki.First());
+                    default:
+                        //Oh no... Maybe pick the best one based on the Entry & Exit?
+                        throw new NotImplementedException();
+                }
+            }
+            else
+            {
+                switch (eki.Count)
+                {
+                    case 0:
+                        //That override info might be useful here
+                        return new TrainStationModel(null, unmapped.StationNameOverride_JA, unmapped.StationNameOverride_EN);
+                    case 1:
+                        //Prefer the sole EkiData record over the unmapped entered record
+                        return new TrainStationModel(eki.First());
+                    default:
+                        //Oh no... Maybe pick the best one based on the Entry & Exit?
+                        //TODO: figure out how to pick a station if more than one result
+                        throw new NotImplementedException();
+                }
+            }
         }
     }
 }
