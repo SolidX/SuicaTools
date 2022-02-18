@@ -174,15 +174,15 @@
   <data name="Settlement" xml:space="preserve">
     <value>精算</value>
   </data>
-  <data name="Settlement_External" xml:space="preserve">
-    <value>物現</value>
-  </data>
-  <data name="Settlement_ExternalAdmission" xml:space="preserve">
-    <value>入場現金併用物販</value>
-  </data>
   <data name="ShinkansenPayment" xml:space="preserve">
     <value>支払</value>
     <comment>新幹線利用</comment>
+  </data>
+  <data name="ThirdParty_Admission" xml:space="preserve">
+    <value>入場現金併用物販</value>
+  </data>
+  <data name="ThirdParty_Purchase" xml:space="preserve">
+    <value>物現</value>
   </data>
   <data name="TicketOfficeDeduction" xml:space="preserve">
     <value>控除</value>

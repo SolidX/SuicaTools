@@ -126,7 +126,7 @@ namespace Solidus.SuicaTools
         {
             get
             {
-                if (IsBusRelated() || IsBusRelated())
+                if (IsASaleOfGoods() || IsBusRelated())
                     return null;
                 else
                     return RawData[8];
@@ -141,7 +141,7 @@ namespace Solidus.SuicaTools
         {
             get
             {
-                if (IsBusRelated() || IsBusRelated())
+                if (IsASaleOfGoods() || IsBusRelated())
                     return null;
                 else
                     return RawData[9];

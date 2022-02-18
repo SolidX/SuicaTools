@@ -178,17 +178,17 @@
     <value>Settlement</value>
     <comment>???</comment>
   </data>
-  <data name="Settlement_External" xml:space="preserve">
-    <value>Third-party Settlement</value>
-    <comment>???</comment>
-  </data>
-  <data name="Settlement_ExternalAdmission" xml:space="preserve">
-    <value>Third-party Admission Settlement</value>
-    <comment>???</comment>
-  </data>
   <data name="ShinkansenPayment" xml:space="preserve">
     <value>Shinkansen Payment</value>
     <comment>Gotta go fast</comment>
+  </data>
+  <data name="ThirdParty_Admission" xml:space="preserve">
+    <value>Third-party Admission</value>
+    <comment>???</comment>
+  </data>
+  <data name="ThirdParty_Purchase" xml:space="preserve">
+    <value>Third-party Purchase</value>
+    <comment>???</comment>
   </data>
   <data name="TicketOfficeDeduction" xml:space="preserve">
     <value>Ticket Office Deduction</value>
