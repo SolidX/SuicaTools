@@ -93,7 +93,7 @@ namespace Solidus.SuicaTools
         /// A identifier specifying the train line you entered the system from.
         /// </summary>
         /// <remarks>Byte 6</remarks>
-        public short? EntryLineCode
+        public byte? EntryLineCode
         {
             get
             {
@@ -108,7 +108,7 @@ namespace Solidus.SuicaTools
         /// An identifier spcificying the station you entered the system at.
         /// </summary>
         /// <remarks>Byte 7</remarks>
-        public short? EntryStationCode
+        public byte? EntryStationCode
         {
             get
             {
@@ -122,7 +122,7 @@ namespace Solidus.SuicaTools
         /// A identifier specifying the train line you exited the system at.
         /// </summary>
         /// <remarks>Byte 8</remarks>
-        public short? ExitLineCode
+        public byte? ExitLineCode
         {
             get
             {
@@ -137,7 +137,7 @@ namespace Solidus.SuicaTools
         /// An identifier spcificying the station you exited from.
         /// </summary>
         /// <remarks>Byte 9</remarks>
-        public short? ExitStationCode
+        public byte? ExitStationCode
         {
             get
             {
@@ -202,7 +202,6 @@ namespace Solidus.SuicaTools
                     var mins = (rawBits & 0b0000011111100000) >> 5;
                     var secs = (rawBits & 0b0000000000011111) * 2;
 
-                    var date = TransactionDate;
                     return new TimeOnly(hours, mins, secs);
                 }
                 return null;
@@ -310,104 +309,68 @@ namespace Solidus.SuicaTools
                 return new DateTime(date.Year, date.Month, date.Day);
         }
 
-        private async Task<IEnumerable<SaibaneCode>> GetEkiDataStationsFromSaibaneCode(short region, short line, short station)
+        private async Task<IEnumerable<TrainStationModel>> GetEkiDataStationsFromSaibaneCode(byte region, byte line, byte station)
         {
-            var mappings = await _context.SaibaneCodes
-                .Include(sc => sc.Station)
+            var saibane = await _context.SaibaneCodes.AsNoTracking().SingleOrDefaultAsync(sc => sc.RegionCode == region && sc.LineCode == line && sc.StationCode == station);
+            var mappings = await _context.SaibaneCodeMapping
+                .Include(sc => sc.EkiDataStation)
                     .ThenInclude(s => s.Line)
                         .ThenInclude(l => l.Company)
                             .ThenInclude(c => c.Status)
-                .Include(sc => sc.Station)
+                .Include(sc => sc.EkiDataStation)
                     .ThenInclude(s => s.Line)
                         .ThenInclude(l => l.Status)
-                .Include(sc => sc.Station)
+                .Include(sc => sc.EkiDataStation)
                     .ThenInclude(s => s.Status)
+                .Include(sc => sc.Saibane)
                 .AsNoTracking()
                 .Where(sc => sc.RegionCode == region && sc.LineCode == line && sc.StationCode == station)
                 .ToListAsync();
 
-            return mappings;
+            var output = new List<TrainStationModel>();
+
+            if (saibane != null && mappings.Count == 0)
+                output.Add(new TrainStationModel(null, saibane));
+            output.AddRange(mappings.Select(m => new TrainStationModel(m.EkiDataStation, m.Saibane)));
+
+            return output;
         }
 
         public async Task<TrainStationModel?> GetEntryStation()
         {
-            if (IsASaleOfGoods() || IsBusRelated()) return null;
+            if (IsASaleOfGoods() || IsBusRelated() || !EntryLineCode.HasValue || !EntryStationCode.HasValue) return null;
 
-            var mappings = await GetEkiDataStationsFromSaibaneCode((short)RegionCode, EntryLineCode.Value, EntryStationCode.Value);
-            var unmapped = mappings.SingleOrDefault(sc => sc.Station == null);
-            var eki = mappings.Select(sc => sc.Station).ToList();
+            var mappings = await GetEkiDataStationsFromSaibaneCode((byte)RegionCode, EntryLineCode.Value, EntryStationCode.Value);
 
-            if (unmapped == null)
-            {
-                switch (eki.Count)
-                {
-                    case 0:
-                        //Nothing found
-                        return null;
-                    case 1:
-                        //The only match is the right one
-                        return new TrainStationModel(eki.First());
-                    default:
-                        //Oh no... Maybe pick the best one based on the Entry & Exit?
-                        throw new NotImplementedException();
-                }
-            }
-            else
-            {
-                switch (eki.Count)
-                {
-                    case 0:
-                        //That override info might be useful here
-                        return new TrainStationModel(null, unmapped.StationNameOverride_JA, unmapped.StationNameOverride_EN);
-                    case 1:
-                        //Prefer the sole EkiData record over the unmapped entered record
-                        return new TrainStationModel(eki.First());
-                    default:
-                        //Oh no... Maybe pick the best one based on the Entry & Exit?
-                        //TODO: figure out how to pick a station if more than one result
-                        throw new NotImplementedException();
-                }
-            }            
+            //Nothing found
+            if (!mappings.Any())
+                return null;
+
+            //The only match is the right one
+            if (mappings.Count() == 1)
+                return mappings.First();
+
+            //Oh no... Maybe pick the best one based on the Entry & Exit?
+            //TODO: figure out how to pick a station if more than one result
+            throw new NotImplementedException();
         }
         public async Task<TrainStationModel?> GetExitStation()
         {
-            if (IsASaleOfGoods() || IsBusRelated()) return null;
+            if (IsASaleOfGoods() || IsBusRelated() || !ExitLineCode.HasValue || !ExitStationCode.HasValue) return null;
 
-            var mappings = await GetEkiDataStationsFromSaibaneCode((short)RegionCode, ExitLineCode.Value, ExitStationCode.Value);
-            var unmapped = mappings.SingleOrDefault(sc => sc.Station == null);
-            var eki = mappings.Select(sc => sc.Station).ToList();
+            var mappings = await GetEkiDataStationsFromSaibaneCode((byte)RegionCode, ExitLineCode.Value, ExitStationCode.Value);
 
-            if (unmapped == null)
-            {
-                switch (eki.Count)
-                {
-                    case 0:
-                        //Nothing found
-                        return null;
-                    case 1:
-                        //The only match is the right one
-                        return new TrainStationModel(eki.First());
-                    default:
-                        //Oh no... Maybe pick the best one based on the Entry & Exit?
-                        throw new NotImplementedException();
-                }
-            }
-            else
-            {
-                switch (eki.Count)
-                {
-                    case 0:
-                        //That override info might be useful here
-                        return new TrainStationModel(null, unmapped.StationNameOverride_JA, unmapped.StationNameOverride_EN);
-                    case 1:
-                        //Prefer the sole EkiData record over the unmapped entered record
-                        return new TrainStationModel(eki.First());
-                    default:
-                        //Oh no... Maybe pick the best one based on the Entry & Exit?
-                        //TODO: figure out how to pick a station if more than one result
-                        throw new NotImplementedException();
-                }
-            }
+            //Nothing found
+            if (!mappings.Any())
+                return null;
+
+            //The only match is the right one
+            if (mappings.Count() == 1)
+                return mappings.First();
+
+            //Oh no... Maybe pick the best one based on the Entry & Exit?
+            //TODO: figure out how to pick a station if more than one result
+            throw new NotImplementedException();
         }
     }
 }

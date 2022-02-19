@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Solidus.SuicaTools.Data.Entities;
 using Solidus.SuicaTools.Data.Entities.EkiData;
 
 namespace Solidus.SuicaTools.Data
@@ -13,6 +14,7 @@ namespace Solidus.SuicaTools.Data
         public DbSet<Status> Statuses { get; set; }
         public DbSet<Prefecture> Prefectures { get; set; }
         public DbSet<SaibaneCode> SaibaneCodes { get; set; }
+        public DbSet<SaibaneCodeEkiDataStation> SaibaneCodeMapping { get; set; }
 
         public TransitContext(DbContextOptions<TransitContext> options) : base(options)
         {
@@ -64,8 +66,8 @@ namespace Solidus.SuicaTools.Data
                 entity.Property(l => l.StatusId).HasColumnName("Status");
                 entity.Property(l => l.LineTypeId).HasColumnName("Type");
                 entity.Property(l => l.ColorCode).HasMaxLength(6);
-                entity.Property(l => l.Latitude).HasPrecision(8);
-                entity.Property(l => l.Longitude).HasPrecision(8);
+                entity.Property(l => l.Latitude).HasColumnType("decimal").HasPrecision(8);
+                entity.Property(l => l.Longitude).HasColumnType("decimal").HasPrecision(8);
 
                 entity.HasOne(l => l.Company).WithMany().HasForeignKey(l => l.CompanyCode);
                 entity.HasOne(l => l.Type).WithMany().HasForeignKey(l => l.LineTypeId);
@@ -79,8 +81,8 @@ namespace Solidus.SuicaTools.Data
 
                 entity.Property(s => s.StatusId).HasColumnName("Status");
                 entity.Property(s => s.PrefectureId).HasColumnName("Prefecture");
-                entity.Property(s => s.Latitude).HasPrecision(8);
-                entity.Property(s => s.Longitude).HasPrecision(8);
+                entity.Property(s => s.Latitude).HasColumnType("decimal").HasPrecision(8);
+                entity.Property(s => s.Longitude).HasColumnType("decimal").HasPrecision(8);
 
                 entity.HasOne(s => s.Line).WithMany().HasForeignKey(s => s.LineCode);
                 entity.HasOne(s => s.Prefecture).WithMany().HasForeignKey(s => s.PrefectureId);
@@ -91,8 +93,15 @@ namespace Solidus.SuicaTools.Data
             {
                 entity.ToTable("SaibaneCodes");
                 entity.HasKey(sc => new { sc.RegionCode, sc.LineCode, sc.StationCode });
+            });
 
-                entity.HasOne(sc => sc.Station).WithMany().HasForeignKey(sc => sc.EkiData_StationCode);
+            modelBuilder.Entity<SaibaneCodeEkiDataStation>(entity =>
+            {
+                entity.ToTable("SaibaneCodeEkiDataStations");
+                entity.HasKey(m => new { m.RegionCode, m.LineCode, m.StationCode, m.EkiData_StationCode });
+
+                entity.HasOne(m => m.Saibane).WithMany().HasForeignKey(m => new { m.RegionCode, m.LineCode, m.StationCode });
+                entity.HasOne(m => m.EkiDataStation).WithMany().HasForeignKey(m => m.EkiData_StationCode);
             });
         }
     }

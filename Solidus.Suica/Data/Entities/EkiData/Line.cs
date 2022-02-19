@@ -16,12 +16,12 @@ namespace Solidus.SuicaTools.Data.Entities.EkiData
         [MaxLength(6)]
         public string? ColorCode { get; set; }
         public string? ColorName { get; set; }
-        public short? LineTypeId { get; set; }
+        public byte? LineTypeId { get; set; }
         public LineType? Type { get; set; }
         public decimal? Longitude { get; set; }
         public decimal? Latitude { get; set; }
-        public short? GoogleMapZoomLevel { get; set; }
-        public short? StatusId { get; set; }
+        public byte? GoogleMapZoomLevel { get; set; }
+        public byte? StatusId { get; set; }
         public Status? Status { get; set; }
     }
 }

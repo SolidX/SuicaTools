@@ -72,6 +72,7 @@
     <Build Include="dbo\Tables\SaibaneCodes.sql" />
     <Build Include="dbo\Tables\EkiData_Statuses.sql" />
     <None Include="dbo\Seed.EkiData_Statuses.sql" />
+    <Build Include="dbo\Tables\SaibaneCodeEkiDataStations.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="dbo\Script.PostDeployment.sql" />

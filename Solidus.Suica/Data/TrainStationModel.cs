@@ -4,25 +4,37 @@ namespace Solidus.SuicaTools.Data
 {
     public class TrainStationModel
     {
+        public SaibaneCode? Saibane { get; private set; }
         public Station? EkiDataInfo { get; private set; }
 
-        private string? _nativeName;
-        public string NativeName
+        public string NativeOperatorName
         {
-            get { return EkiDataInfo != null ? EkiDataInfo.StationName : _nativeName; }
+            get { return EkiDataInfo?.Line?.Company?.Name ?? Saibane?.OperatorName; }
+        }
+        public string NativeLineName
+        {
+            get { return EkiDataInfo?.Line?.Name ?? Saibane?.LineName; }
+        }
+        public string NativeStationName
+        {
+            get { return EkiDataInfo?.StationName ?? Saibane?.StationName; }
         }
 
-        private string? _englishName;
-        public string? EnglishName
+        public string LocalizedOperatorName
         {
-            get { return _englishName; }
+            get { return EkiDataInfo?.Line?.Company?.Name_English; }
+        }
+        public string LocalizedLineName
+        {
+            get { return EkiDataInfo?.Line?.Name_English; }
         }
 
-        public TrainStationModel(Station? s = null, string? overrideName = null, string? overrideNameEn = null)
+        //TODO: LocalizedStationName
+
+        public TrainStationModel(Station? s, SaibaneCode? sc)
         {
+            Saibane = sc;
             EkiDataInfo = s;
-            _nativeName = overrideName;
-            _englishName = overrideNameEn;
         }
     }
 }

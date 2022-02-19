@@ -2,7 +2,7 @@
 {
     public class CompanyType
     {
-        public short Id { get; set; }
+        public byte Id { get; set; }
         public string Name_JA { get; set; }
         public string Name_EN { get; set; }
     }

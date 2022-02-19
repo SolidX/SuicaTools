@@ -51,6 +51,16 @@ namespace Solidus.SuicaTools
             return null;
         }
 
+        // <summary>
+        /// Gets a particular transaction record.
+        /// </summary>
+        /// <param name="transactionNumber">The transaction number to look up.</param>
+        /// <returns>The requested transaction or null if it cannot be found</return
+        public SuicaLogEntry? this[uint transactionNumber]
+        {
+            get { return Get(transactionNumber); }
+        }
+
         /// <summary>
         /// Determines the value of a particular transaction.
         /// </summary><
