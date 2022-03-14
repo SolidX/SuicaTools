@@ -1,7 +1,8 @@
 ﻿CREATE TABLE [dbo].[EkiData_Stations] (
     [StationCode]      INT             NOT NULL,
     [StationGroupCode] INT             NOT NULL,
-    [StationName]      NVARCHAR (80)   NOT NULL,
+    [Name]             NVARCHAR (80)   NOT NULL,
+    [Name_English]     NVARCHAR (80)   NULL,
     [LineCode]         INT             NOT NULL,
     [Prefecture]       TINYINT         NULL,
     [PostalCode]       VARCHAR (10)    NULL,

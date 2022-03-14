@@ -5,5 +5,6 @@
     [OperatorName]           NVARCHAR(80)  NOT NULL,
     [LineName]               NVARCHAR(80)  NOT NULL,
     [StationName]            NVARCHAR(80)  NOT NULL,
+    [StationName_English]    NVARCHAR(80)  NULL, 
     CONSTRAINT [PK_SaibaneCodes] PRIMARY KEY CLUSTERED ([RegionCode] ASC, [LineCode] ASC, [StationCode] ASC)
 );

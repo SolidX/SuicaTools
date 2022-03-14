@@ -4,37 +4,25 @@ namespace Solidus.SuicaTools.Data
 {
     public class TrainStationModel
     {
-        public SaibaneCode? Saibane { get; private set; }
-        public Station? EkiDataInfo { get; private set; }
+        public string? NativeOperatorName { get; set; }
+        public string? NativeLineName { get; set; }
+        public string? NativeStationName { get; set; }
+        public string? LocalizedOperatorName { get; set; }
+        public string? LocalizedLineName { get; set; }
+        public string? LocalizedStationName { get; set; }
 
-        public string NativeOperatorName
+        public TrainStationModel()
         {
-            get { return EkiDataInfo?.Line?.Company?.Name ?? Saibane?.OperatorName; }
-        }
-        public string NativeLineName
-        {
-            get { return EkiDataInfo?.Line?.Name ?? Saibane?.LineName; }
-        }
-        public string NativeStationName
-        {
-            get { return EkiDataInfo?.StationName ?? Saibane?.StationName; }
         }
 
-        public string LocalizedOperatorName
+        public TrainStationModel(Station? ekidataStation, SaibaneCode? saibane)
         {
-            get { return EkiDataInfo?.Line?.Company?.Name_English; }
-        }
-        public string LocalizedLineName
-        {
-            get { return EkiDataInfo?.Line?.Name_English; }
-        }
-
-        //TODO: LocalizedStationName
-
-        public TrainStationModel(Station? s, SaibaneCode? sc)
-        {
-            Saibane = sc;
-            EkiDataInfo = s;
+            NativeOperatorName = ekidataStation?.Line?.Company?.Name ?? saibane?.OperatorName;
+            NativeLineName = ekidataStation?.Line?.Name ?? saibane?.LineName;
+            NativeStationName = ekidataStation?.Name ?? saibane?.StationName;
+            LocalizedOperatorName = ekidataStation?.Line?.Company?.Name_English;
+            LocalizedLineName = ekidataStation?.Line?.Name_English;
+            LocalizedStationName = ekidataStation?.Name_English ?? saibane?.StationName_English;
         }
     }
 }

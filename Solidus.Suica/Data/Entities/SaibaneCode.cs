@@ -8,5 +8,6 @@
         public string OperatorName { get; set; }
         public string LineName { get; set; }
         public string StationName { get; set; }
+        public string? StationName_English { get; set; }
     }
 }

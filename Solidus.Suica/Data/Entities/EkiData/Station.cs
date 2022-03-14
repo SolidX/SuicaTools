@@ -1,12 +1,11 @@
-﻿using System;
-
-namespace Solidus.SuicaTools.Data.Entities.EkiData
+﻿namespace Solidus.SuicaTools.Data.Entities.EkiData
 {
     public class Station
     {
         public int StationCode { get; set; }
         public int StationGroupCode { get; set; }
-        public string StationName { get; set; }
+        public string Name { get; set; }
+        public string? Name_English { get; set; }
         public int LineCode { get; set; }
         public Line Line { get; set; }
         public byte? PrefectureId { get; set; } 
