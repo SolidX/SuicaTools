@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32126.317
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Solidus.SuicaTools", "Solidus.Suica\Solidus.SuicaTools.csproj", "{1E1ABC1F-C031-4C6F-B6C7-162808D9085C}"
-EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "TrainStations", "TrainStations\TrainStations.sqlproj", "{42BC240D-5869-4DF5-9985-F525DDD666DC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{484163CC-9BCE-49C4-9F40-FCDEBC761CA9}"
@@ -12,25 +10,35 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data Sources", "Data Sources", "{F4FAFDA7-686A-472F-9BFD-87A71206335F}"
+	ProjectSection(SolutionItems) = preProject
+		Data Sources\StationCode.csv = Data Sources\StationCode.csv
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Solidus.SuicaTools", "Solidus.SuicaTools\Solidus.SuicaTools.csproj", "{77076A63-4597-4FAA-8819-DC7063A69453}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1E1ABC1F-C031-4C6F-B6C7-162808D9085C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1E1ABC1F-C031-4C6F-B6C7-162808D9085C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1E1ABC1F-C031-4C6F-B6C7-162808D9085C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1E1ABC1F-C031-4C6F-B6C7-162808D9085C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{42BC240D-5869-4DF5-9985-F525DDD666DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{42BC240D-5869-4DF5-9985-F525DDD666DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42BC240D-5869-4DF5-9985-F525DDD666DC}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{42BC240D-5869-4DF5-9985-F525DDD666DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42BC240D-5869-4DF5-9985-F525DDD666DC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{42BC240D-5869-4DF5-9985-F525DDD666DC}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{77076A63-4597-4FAA-8819-DC7063A69453}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77076A63-4597-4FAA-8819-DC7063A69453}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77076A63-4597-4FAA-8819-DC7063A69453}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77076A63-4597-4FAA-8819-DC7063A69453}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F4FAFDA7-686A-472F-9BFD-87A71206335F} = {484163CC-9BCE-49C4-9F40-FCDEBC761CA9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1AB642CC-BC70-46A5-8219-B3BE8015BE75}
