@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <Name>TrainStations</Name>
+    <Name>TransitStations</Name>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
     <ProjectGuid>{42bc240d-5869-4df5-9985-f525ddd666dc}</ProjectGuid>
@@ -22,6 +22,7 @@
     <SqlServerVerification>False</SqlServerVerification>
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
     <TargetDatabaseSet>True</TargetDatabaseSet>
+    <TargetDatabase>TransitStations</TargetDatabase>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -73,6 +74,7 @@
     <Build Include="dbo\Tables\EkiData_Statuses.sql" />
     <None Include="dbo\Seed.EkiData_Statuses.sql" />
     <Build Include="dbo\Tables\SaibaneCodeEkiDataStations.sql" />
+    <Build Include="dbo\Tables\IruCa_BusStop.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="dbo\Script.PostDeployment.sql" />

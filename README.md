@@ -22,7 +22,9 @@ After scouring the internet, I found an ancient CSV dump Saibane Code to station
 In order to provide useful information, I've mapped many of these codes to their corresponding EkiData station ids. [EkiData](https://ekidata.jp/) is a popular database containing most Japanese railway stations. I then used a variety of sources (espeically Wikipedia) to localize the names of railway operators, lines, and some stations for English speakers. Huge thanks to @piuccio whose ["open-data-jp"](https://github.com/piuccio?utf8=%E2%9C%93&tab=repositories&q=open-data-jp-rail&type=&language=) projects made this a lot easier.
 
 ### Bus Stop Information
-TBD
+Bus stop information is stored as 2 16-bit unsigned integers, one for the Bus Line and one for the Bus Stop.
+
+I've found a CSV dump of the [IruCa](https://en.wikipedia.org/wiki/IruCa) Bus Stop codes and included it [here](Data%20Dources/IruCaStationCode.csv).
 
 ### Point of Sale Information
 That's a very big TBD

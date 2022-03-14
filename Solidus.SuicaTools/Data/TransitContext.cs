@@ -14,7 +14,8 @@ namespace Solidus.SuicaTools.Data
         public DbSet<Status> Statuses { get; set; }
         public DbSet<Prefecture> Prefectures { get; set; }
         public DbSet<SaibaneCode> SaibaneCodes { get; set; }
-        public DbSet<SaibaneCodeEkiDataStation> SaibaneCodeMapping { get; set; }
+        public DbSet<SaibaneCodeEkiDataStation> SaibaneCodeMappings { get; set; }
+        public DbSet<IruCaBusStop> IruCaBusStops { get; set; }
 
         public TransitContext(DbContextOptions<TransitContext> options) : base(options)
         {
@@ -102,6 +103,12 @@ namespace Solidus.SuicaTools.Data
 
                 entity.HasOne(m => m.Saibane).WithMany().HasForeignKey(m => new { m.RegionCode, m.LineCode, m.StationCode });
                 entity.HasOne(m => m.EkiDataStation).WithMany().HasForeignKey(m => m.EkiData_StationCode);
+            });
+
+            modelBuilder.Entity<IruCaBusStop>(entity =>
+            {
+                entity.ToTable("IruCa_BusStop");
+                entity.HasKey(b => b.Id);
             });
         }
     }

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32126.317
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "TrainStations", "TrainStations\TrainStations.sqlproj", "{42BC240D-5869-4DF5-9985-F525DDD666DC}"
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "TransitStations", "TrainStations\TransitStations.sqlproj", "{42BC240D-5869-4DF5-9985-F525DDD666DC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{484163CC-9BCE-49C4-9F40-FCDEBC761CA9}"
 	ProjectSection(SolutionItems) = preProject
@@ -12,6 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data Sources", "Data Sources", "{F4FAFDA7-686A-472F-9BFD-87A71206335F}"
 	ProjectSection(SolutionItems) = preProject
+		Data Sources\IruCaStationCode.csv = Data Sources\IruCaStationCode.csv
 		Data Sources\StationCode.csv = Data Sources\StationCode.csv
 	EndProjectSection
 EndProject

@@ -1,10 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Solidus.SuicaTools.Data;
-using Solidus.SuicaTools.Data.Entities.EkiData;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Solidus.SuicaTools
 {
@@ -154,7 +149,7 @@ namespace Solidus.SuicaTools
         /// An identifier for a particular transit operator
         /// </summary>
         /// <remarks>Bytes 6 & 7</remarks>
-        public ushort? OperatorCode
+        public ushort? BusOperatorCode
         {
             get
             {
@@ -312,7 +307,7 @@ namespace Solidus.SuicaTools
         private async Task<IEnumerable<TrainStationModel>> GetEkiDataStationsFromSaibaneCode(byte region, byte line, byte station)
         {
             var saibane = await _context.SaibaneCodes.AsNoTracking().SingleOrDefaultAsync(sc => sc.RegionCode == region && sc.LineCode == line && sc.StationCode == station);
-            var mappings = await _context.SaibaneCodeMapping
+            var mappings = await _context.SaibaneCodeMappings
                 .Include(sc => sc.EkiDataStation)
                     .ThenInclude(s => s.Line)
                         .ThenInclude(l => l.Company)
@@ -336,6 +331,11 @@ namespace Solidus.SuicaTools
             return output;
         }
 
+        /// <summary>
+        /// Gets information about the Entry train station associated with this transaction
+        /// </summary>
+        /// <returns>Train station information or null if none is available.</returns>
+        /// <exception cref="NotImplementedException">Multiple results were mapped to the entry Saibane Code.</exception>
         public async Task<TrainStationModel?> GetEntryStation()
         {
             if (IsASaleOfGoods() || IsBusRelated() || !EntryLineCode.HasValue || !EntryStationCode.HasValue) return null;
@@ -354,6 +354,12 @@ namespace Solidus.SuicaTools
             //TODO: figure out how to pick a station if more than one result
             throw new NotImplementedException();
         }
+
+        /// <summary>
+        /// Gets information about the Exit train station associated with this transaction
+        /// </summary>
+        /// <returns>Train station information or null if none is available.</returns>
+        /// <exception cref="NotImplementedException">Multiple results were mapped to the entry Saibane Code.</exception>
         public async Task<TrainStationModel?> GetExitStation()
         {
             if (IsASaleOfGoods() || IsBusRelated() || !ExitLineCode.HasValue || !ExitStationCode.HasValue) return null;
@@ -371,6 +377,18 @@ namespace Solidus.SuicaTools
             //Oh no... Maybe pick the best one based on the Entry & Exit?
             //TODO: figure out how to pick a station if more than one result
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Gets information about the bus stop associated with this transaction.
+        /// </summary>
+        /// <returns>Bus stop information or null if there is no information available.</returns>
+        public BusStopModel? GetBusStop()
+        {
+            if (!IsBusRelated() || !BusOperatorCode.HasValue || !BusStopCode.HasValue) return null;
+
+            var result = _context.IruCaBusStops.AsNoTracking().SingleOrDefault(b => b.LineCode == BusOperatorCode.Value && b.StationCode == BusStopCode.Value);
+            return result != null ? new BusStopModel(result) : null;   
         }
     }
 }
