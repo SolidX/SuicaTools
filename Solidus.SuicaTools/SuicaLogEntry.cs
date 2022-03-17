@@ -245,7 +245,7 @@ namespace Solidus.SuicaTools
             get
             {
                 var code = (RegionCode)((RawData[15] & 0b00110000) >> 4);
-                return Enum.IsDefined(typeof(RegionCode), code) ? (RegionCode)code : RegionCode.Unknown;
+                return Enum.IsDefined(typeof(RegionCode), code) ? code : RegionCode.Unknown;
             }
         }
 
