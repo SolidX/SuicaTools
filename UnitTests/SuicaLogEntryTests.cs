@@ -354,7 +354,7 @@ namespace UnitTests
                 LineName = "",
                 StationName= "Sakae Ekimae"                
             };
-            context.IruCaBusStops.Add(stop);
+            context.Add(stop);
             context.SaveChanges();
 
             var transaction = new SuicaLogEntry(data, context);

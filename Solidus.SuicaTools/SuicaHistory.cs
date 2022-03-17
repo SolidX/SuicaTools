@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections;
 
 namespace Solidus.SuicaTools
 {
@@ -9,6 +8,8 @@ namespace Solidus.SuicaTools
     public class SuicaHistory
     {
         private readonly Dictionary<uint, SuicaLogEntry> _entries;
+
+        public int Count => _entries.Count;
 
         public SuicaHistory()
         {
@@ -34,6 +35,8 @@ namespace Solidus.SuicaTools
         /// Adds a transaction to the history.
         /// </summary>
         /// <param name="entry">The transaction to add.</param>
+        /// <exception cref="ArgumentException">If <paramref name="entry"/> has the same Transaction Number as another History entry.</exception>
+        /// <exception cref="ArgumentNullException">If <paramref name="entry"/> is null.</exception>
         public void Add(SuicaLogEntry entry)
         {
             _entries.Add(entry.TransactionNumber, entry);
