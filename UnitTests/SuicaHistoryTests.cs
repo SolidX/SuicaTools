@@ -9,7 +9,7 @@ namespace UnitTests
 {
     public class SuicaHistoryTests
     {
-        private Faker _f = new Faker();
+        private readonly Faker _f = new Faker();
 
         public static TransitContext GetContext([CallerMemberName] string methodName = "UnitTest")
         {
@@ -26,9 +26,9 @@ namespace UnitTests
             var transaction = new SuicaLogEntry(data, context);
             var history = new SuicaHistory();
             
-            Assert.Equal(0, history.Count);
+            Assert.Empty(history);
             history.Add(transaction);
-            Assert.Equal(1, history.Count);
+            Assert.Single(history);
             Assert.True(history.Contains(162));
         }
 
@@ -40,9 +40,11 @@ namespace UnitTests
 
             var transactionId = 162u;
             var transaction = new SuicaLogEntry(data, context);
-            var history = new SuicaHistory();
-            history.Add(transaction);
-            
+            var history = new SuicaHistory
+            {
+                transaction
+            };
+
             Assert.True(history.Contains(transactionId));
             Assert.NotNull(history[transactionId]);
             Assert.NotNull(history.Get(transactionId));
@@ -86,8 +88,10 @@ namespace UnitTests
 
             var transactionId = 162u;
             var transaction = new SuicaLogEntry(data, context);
-            var history = new SuicaHistory();
-            history.Add(transaction);
+            var history = new SuicaHistory
+            {
+                transaction
+            };
 
             Assert.Null(history.GetTransactionAmount(transactionId));
         }

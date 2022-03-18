@@ -11,7 +11,7 @@ namespace UnitTests
 {
     public class SuicaLogEntryTests
     {
-        private Faker _f = new Faker();
+        private readonly Faker _f = new Faker();
 
         public static TransitContext GetContext([CallerMemberName] string methodName = "UnitTest")
         {

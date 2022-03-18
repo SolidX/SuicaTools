@@ -1,15 +1,18 @@
-﻿using System.Collections;
+﻿using Hazzik.Qif;
+using System.Collections;
 
 namespace Solidus.SuicaTools
 {
     /// <summary>
     /// Represents the entire Suica History log.
     /// </summary>
-    public class SuicaHistory
+    public class SuicaHistory : ICollection<SuicaLogEntry>
     {
         private readonly Dictionary<uint, SuicaLogEntry> _entries;
 
         public int Count => _entries.Count;
+
+        public bool IsReadOnly => false;
 
         public SuicaHistory()
         {
@@ -86,6 +89,41 @@ namespace Solidus.SuicaTools
                 return null;
             }
             throw new KeyNotFoundException("Transaction number not found.");
+        }
+
+        public void Clear()
+        {
+            _entries.Clear();
+        }
+
+        public bool Contains(SuicaLogEntry item)
+        {
+            return _entries.Remove(item.TransactionNumber);
+        }
+
+        public void CopyTo(SuicaLogEntry[] array, int arrayIndex)
+        {
+            var i = arrayIndex;
+            foreach (var e in this)
+            {
+                array[i] = e;
+                i++;
+            }
+        }
+
+        public bool Remove(SuicaLogEntry item)
+        {
+            return _entries.Remove(item.TransactionNumber);
+        }
+
+        public IEnumerator<SuicaLogEntry> GetEnumerator()
+        {
+            return _entries.Values.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }
