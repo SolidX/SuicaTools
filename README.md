@@ -4,7 +4,7 @@ A .NET application to decode history entries from [Suica](https://en.wikipedia.o
 ## Goals
 - ~~Decode history entries written to IC cards~~
 - Localize Train Station Information
-- Export entries as financial data files (probably OFX)
+- ~~Export entries as financial data files~~ (QIF because what is the OFX format)
 - A fancy UI maybe?
 
 ## How to Build
