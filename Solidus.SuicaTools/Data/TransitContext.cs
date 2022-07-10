@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Solidus.SuicaTools.Data.Converters;
 using Solidus.SuicaTools.Data.Entities;
 using Solidus.SuicaTools.Data.Entities.EkiData;
 
@@ -19,6 +20,12 @@ namespace Solidus.SuicaTools.Data
 
         public TransitContext(DbContextOptions<TransitContext> options) : base(options)
         {
+        }
+
+        protected override void ConfigureConventions(ModelConfigurationBuilder builder)
+        {
+            builder.Properties<DateOnly>().HaveConversion<DateOnlyConverter>().HaveColumnType("date");
+            builder.Properties<DateOnly?>().HaveConversion<NullableDateOnlyConverter>().HaveColumnType("date");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

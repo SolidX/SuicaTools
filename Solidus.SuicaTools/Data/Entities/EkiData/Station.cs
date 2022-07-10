@@ -14,8 +14,8 @@
         public string? Address { get; set; }
         public decimal? Longitude { get; set; }
         public decimal? Latitude { get; set; }
-        public DateTime? OpeningDate { get; set; }
-        public DateTime? ClosingDate { get; set; }
+        public DateOnly? OpeningDate { get; set; }
+        public DateOnly? ClosingDate { get; set; }
         public byte? StatusId { get; set; }
         public Status? Status { get; set; }
     }
