@@ -71,7 +71,7 @@ namespace Solidus.SuicaTools
         /// Determines the value of a particular transaction.
         /// </summary><
         /// <param name="transactionNumber">The transaction number to look up.</param>
-        /// <returns>The difference in balance between this transaction and the one that immediately preceeds it or null if the amounce can't be determined because there's a gap in the transaction history.</returns>
+        /// <returns>The difference in balance between this transaction and the one that immediately preceeds it or null if the amount can't be determined because there's a gap in the transaction history.</returns>
         /// <exception cref="KeyNotFoundException">If the provided <paramref name="transactionNumber"/> is not available in the history.</exception>
         public uint? GetTransactionAmount(uint transactionNumber)
         {
@@ -84,7 +84,7 @@ namespace Solidus.SuicaTools
 
                 if (prevTranNum.HasValue)
                 {
-                    return _entries[prevTranNum.Value].Balance - _entries[transactionNumber].Balance;
+                    return (uint?)Math.Abs(Convert.ToInt64(_entries[prevTranNum.Value].Balance) - Convert.ToInt64(_entries[transactionNumber].Balance));
                 }
                 return null;
             }
