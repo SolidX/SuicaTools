@@ -1,5 +1,5 @@
-﻿using Hazzik.Qif;
-using Hazzik.Qif.Transactions;
+﻿using IonTechnologies.Qif;
+using IonTechnologies.Qif.Transactions;
 using Solidus.SuicaTools.Localization;
 using System.Globalization;
 

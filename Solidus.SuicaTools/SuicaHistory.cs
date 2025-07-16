@@ -1,4 +1,4 @@
-﻿using Hazzik.Qif;
+﻿using IonTechnologies.Qif;
 using System.Collections;
 
 namespace Solidus.SuicaTools
